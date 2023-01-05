@@ -17,7 +17,7 @@ public class Main {
         do {
             Scanner input = new Scanner(System.in);
             System.out.println("Welcome to the student-teacher assistance program");
-            System.out.println("Please type your preffered option");
+            System.out.println("Please type your preferred option");
             System.out.println("0.Quit");
             System.out.println("1.Register");
             System.out.println("2.Course information");
@@ -28,27 +28,34 @@ public class Main {
             switch (tempOption) {
                 case 1:
                     System.out.println("Welcome to the student-teacher register program");
-                    System.out.println("Please type your name:");
+                    System.out.println("Please type your family name:");
                     String tempName = input.next();
-                    System.out.println("Please type your id:");
-                    int tempId = input.nextInt();
-                    System.out.println("Please now type the Admin Password if you are a teacher, if you are a student you can skip this step by pressing 0");
-                    int temp = input.nextInt();
-                    if (temp == 1712) {
+                    String name = tempName;
+                    System.out.println("Please type your surname:");
+                    tempName = input.next();
+                    name += tempName;
+                    System.out.println("Please provide a valid id:");
+                    int id = input.nextInt();;
+                    if (isIdValid(id)) {
                         System.out.println("Welcome teacher " + tempName + " ,you are registered now");
-                        TeachersInSchool[teacherNumber] = new Teacher(tempName,tempId);
+                        TeachersInSchool[teacherNumber] = new Teacher(tempName,id);
                         teacherNumber++;
+
                     }
                     else {
                         System.out.println("Welcome student " + tempName + " ,you are registered now");
-                        StudentsInSchool[studentNumber] = new Student(tempName, tempId);
+                        StudentsInSchool[studentNumber] = new Student(tempName, id);
+                        System.out.println("Please specify your pay status, either 1.paid scholarship or 2.reimbursed scholarship");
+                        int temp = input.nextInt();
+                        if (temp == 1)
+                            StudentsInSchool[studentNumber].setPaidScholarship(true);
                         studentNumber++;
                     }
                     break;
 
                 case 5:
                     int tempOption2;
-                    System.out.println("Please select your preffered option");
+                    System.out.println("Please select your preferred option");
                     System.out.println("1.List all Students then all Teachers");
                     tempOption2 = input.nextInt();
                     switch (tempOption2) {
@@ -69,5 +76,21 @@ public class Main {
 
         }while (tempOption != 0);
 
+    }
+
+    public static boolean isIdValid (int id) {
+        boolean isValid = false;
+        int verification = id % 10;
+        id = id / 10;
+        verification += (id % 10) * 10;
+        id = id / 10;
+        int sum = 0;
+        while (id != 0) {
+            sum += id % 10;
+            id = id / 10;
+        }
+        if (sum == verification)
+            isValid = true;
+        return isValid;
     }
 }
